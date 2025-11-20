@@ -1,4 +1,4 @@
-package com.csu.userservice.util;
+package util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -13,16 +13,6 @@ import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
 
-/**
-* @ProjectName: user-service
-* @Title: JwtUtil
-* @Package: com.csu.userservice.util
-* @Description: JWT utils
-* @author qiershi
-* @date 2025/11/19 14:23
-* @version V1.0
-* Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
-*/
 @Component
 public class JwtUtil {
     // 使用足够长的密钥（至少64字符，512位）

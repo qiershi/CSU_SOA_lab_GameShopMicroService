@@ -1,0 +1,3 @@
+jwt:
+  secret: secureSecretKey1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+  expiration: 86400000

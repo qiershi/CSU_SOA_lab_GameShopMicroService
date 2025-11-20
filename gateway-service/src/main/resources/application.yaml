@@ -11,6 +11,12 @@ spring:
         server-addr: localhost:8848
 
     gateway:
+      discovery:
+        locator:
+          # 自动根据服务名生成路由，服务名自动转为小写
+          enabled: true
+          lower-case-service-id: true
+
       routes:
         # user-service
         - id: user-service
@@ -18,6 +24,7 @@ spring:
           predicates:
             - Path=/api/user/**
 
+        # captcha-service
         - id: captcha-service
           uri: lb://captcha-service
           predicates:

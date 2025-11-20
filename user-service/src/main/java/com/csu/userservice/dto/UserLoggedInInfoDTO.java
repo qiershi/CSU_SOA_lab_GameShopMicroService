@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 */
 
 @Data
-public class UserDTO {
+public class UserLoggedInInfoDTO {
 
     private int id;
     @NotBlank(message = "用户名不能为空")
@@ -36,7 +36,7 @@ public class UserDTO {
     @NotBlank(message = "邮箱不能为空")
     private String email;
 
-    public UserDTO(int id, String username, String email) {
+    public UserLoggedInInfoDTO(int id, String username, String email) {
         this.id = id;
         this.username = username;
         this.email = email;

@@ -1,12 +1,12 @@
 package com.csu.userservice.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.csu.userservice.dto.UserDTO;
+import com.csu.userservice.dto.UserLoggedInInfoDTO;
 import com.csu.userservice.entity.User;
 import com.csu.userservice.mapper.UserMapper;
-import com.csu.userservice.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import util.JwtUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
+    // TODO
     private JwtUtil jwtUtil;
 
     public boolean matches(String password, String storedPwd) {
@@ -65,8 +65,8 @@ public class UserService {
 
         String token = jwtUtil.generateToken(Math.toIntExact(user.getId()));
         Map<String, Object> result = new HashMap<>();
-        UserDTO userDTO = new UserDTO(user.getId(), user.getUsername(), user.getEmail());
-        result.put("user", userDTO); // 使用 DTO 避免返回密码
+        UserLoggedInInfoDTO userLoggedInInfoDTO = new UserLoggedInInfoDTO(user.getId(), user.getUsername(), user.getEmail());
+        result.put("user", userLoggedInInfoDTO); // 使用 DTO 避免返回密码
         result.put("token", token);
         return result;
     }

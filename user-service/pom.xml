@@ -60,8 +60,14 @@
 		<!-- JWT 安全服务组件 -->
 		<dependency>
 			<groupId>com.csu</groupId>
-			<artifactId>auth-service</artifactId>
+			<artifactId>common</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+
+		<!-- Jakarta -->
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
 		</dependency>
 
 	</dependencies>

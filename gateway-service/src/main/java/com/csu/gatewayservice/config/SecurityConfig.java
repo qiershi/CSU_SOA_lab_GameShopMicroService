@@ -1,12 +1,21 @@
 package com.csu.gatewayservice.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.csu.common.util.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import util.JwtUtil;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
 * @ProjectName: gateway-service
@@ -20,18 +29,52 @@ import util.JwtUtil;
 */
 
 @Configuration
+@EnableWebFluxSecurity
 public class SecurityConfig {
 
-    // TODO
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
+
+    public SecurityConfig(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+        return http
+                .cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
+                .authorizeExchange(auth -> auth
+                        .pathMatchers("/api/user", "/api/captcha", "/api/captcha/verify").permitAll()
+                        .pathMatchers(HttpMethod.OPTIONS).permitAll()
+                        .pathMatchers("/api/user/**").authenticated()
+                        .anyExchange().authenticated()
+                )
+                .addFilterAt(new JwtAuthWebFilter(jwtUtil), SecurityWebFiltersOrder.AUTHENTICATION)
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((exchange, ex) -> {
+                            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                            return exchange.getResponse()
+                                    .writeWith(Mono.just(exchange.getResponse()
+                                            .bufferFactory()
+                                            .wrap("{\"success\": false, \"message\": \"认证失败\"}".getBytes())));
+                        })
+                        .accessDeniedHandler((exchange, ex) -> {
+                            exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+                            return exchange.getResponse()
+                                    .writeWith(Mono.just(exchange.getResponse()
+                                            .bufferFactory()
+                                            .wrap("{\"success\": false, \"message\": \"权限不足\"}".getBytes())));
+                        })
+                )
+                .build();
+    }
 
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
-
-        config.addAllowedOriginPattern("*");
-        config.addAllowedMethod("*");
-        config.addAllowedHeader("*");
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -39,4 +82,10 @@ public class SecurityConfig {
 
         return new CorsWebFilter(source);
     }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }

@@ -1,20 +1,21 @@
-package util;
+package com.csu.common.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
+
     // 使用足够长的密钥（至少64字符，512位）
     @Value("${jwt.secret:secureSecretKey1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef}")
     private String secret;

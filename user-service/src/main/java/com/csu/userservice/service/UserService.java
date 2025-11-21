@@ -1,12 +1,12 @@
 package com.csu.userservice.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.csu.common.util.JwtUtil;
 import com.csu.userservice.dto.UserLoggedInInfoDTO;
 import com.csu.userservice.entity.User;
 import com.csu.userservice.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import util.JwtUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +27,11 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    // TODO
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
+
+    public UserService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
     public boolean matches(String password, String storedPwd) {
         return password.equals(storedPwd);

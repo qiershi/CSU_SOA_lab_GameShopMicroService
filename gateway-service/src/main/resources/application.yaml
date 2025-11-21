@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8090
 
 spring:
   application:
@@ -12,13 +12,44 @@ spring:
 
     gateway:
       routes:
-        # user-service
+
+        # -------------------------
+        # user-service 路由
+        # -------------------------
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/api/user/**
+            - Path=/user/**
 
+        # -------------------------
+        # captcha-service
+        # -------------------------
         - id: captcha-service
           uri: lb://captcha-service
           predicates:
-            - Path=/api/captcha/**
+            - Path=/captcha/**
+
+        # -------------------------
+        # product-service
+        # -------------------------
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/product/**
+
+        # -------------------------
+        # order-service - 订单接口
+        # -------------------------
+        - id: order-service-order
+          uri: lb://order-service
+          predicates:
+            - Path=/order/**
+
+        # -------------------------
+        # order-service - 购物车接口
+        # 分开写！否则会 404
+        # -------------------------
+        - id: order-service-cart
+          uri: lb://order-service
+          predicates:
+            - Path=/cart/**

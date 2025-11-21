@@ -23,7 +23,6 @@ import java.util.Map;
 * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
 */
 @RestController
-@RequestMapping("/api")
 public class UserController {
     @Autowired
     private UserService userService;

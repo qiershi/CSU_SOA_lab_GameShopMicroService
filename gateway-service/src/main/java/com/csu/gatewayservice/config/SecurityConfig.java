@@ -3,8 +3,10 @@ package com.csu.gatewayservice.config;
 import com.csu.common.util.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -15,6 +17,7 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -50,20 +53,16 @@ public class SecurityConfig {
                         .anyExchange().authenticated()
                 )
                 .addFilterAt(new JwtAuthWebFilter(jwtUtil), SecurityWebFiltersOrder.AUTHENTICATION)
-                .exceptionHandling(exceptions -> exceptions
-                        .authenticationEntryPoint((exchange, ex) -> {
-                            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                            return exchange.getResponse()
-                                    .writeWith(Mono.just(exchange.getResponse()
-                                            .bufferFactory()
-                                            .wrap("{\"success\": false, \"message\": \"认证失败\"}".getBytes())));
-                        })
-                        .accessDeniedHandler((exchange, ex) -> {
-                            exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
-                            return exchange.getResponse()
-                                    .writeWith(Mono.just(exchange.getResponse()
-                                            .bufferFactory()
-                                            .wrap("{\"success\": false, \"message\": \"权限不足\"}".getBytes())));
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((exchange, e) -> {
+                            ServerHttpResponse res = exchange.getResponse();
+                            res.setStatusCode(HttpStatus.UNAUTHORIZED);
+
+                            byte[] bytes = "{\"success\": false, \"message\": \"认证失败\"}"
+                                    .getBytes(StandardCharsets.UTF_8);
+
+                            DataBuffer buffer = res.bufferFactory().wrap(bytes);
+                            return res.writeWith(Mono.just(buffer));
                         })
                 )
                 .build();

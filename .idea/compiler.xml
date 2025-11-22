@@ -16,6 +16,7 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/unknown/lombok-unknown.jar" />
         </processorPath>
         <module name="captcha-service" />
         <module name="user-service" />
@@ -30,10 +31,11 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="GameShopMicroService" options="" />
       <module name="auth-service" options="" />
-      <module name="captcha-service" options="" />
-      <module name="gameshop-micro-services" options="" />
-      <module name="gateway-service" options="" />
-      <module name="user-service" options="" />
+      <module name="captcha-service" options="-parameters" />
+      <module name="common" options="-parameters" />
+      <module name="gameshop-micro-services" options="-parameters" />
+      <module name="gateway-service" options="-parameters" />
+      <module name="user-service" options="-parameters" />
     </option>
   </component>
 </project>

@@ -23,12 +23,16 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/user/**
+          filters:
+            - StripPrefix=1
 
         # captcha-service
         - id: captcha-service
           uri: lb://captcha-service
           predicates:
             - Path=/api/captcha/**
+          filters:
+            - StripPrefix=1
 
 jwt:
   static-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzE0NDE2MDAwfQ.-hRAkTD14LdbEmUlvXxAxWp0ZIl9IvAY-OSiNLk8_Kk

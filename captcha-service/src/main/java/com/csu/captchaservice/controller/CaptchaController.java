@@ -22,7 +22,7 @@ import java.util.Random;
 * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
 */
 @RestController
-@RequestMapping("/api/captcha")
+@RequestMapping("/captcha")
 public class CaptchaController {
     private String currentCaptcha = "";
 

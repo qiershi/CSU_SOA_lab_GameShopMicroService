@@ -1,11 +1,8 @@
 package com.csu.userservice.controller;
 
-import com.csu.userservice.dto.LoginUserDTO;
-import com.csu.userservice.dto.RegisterUserDTO;
 import com.csu.userservice.entity.User;
 import com.csu.userservice.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,19 +20,23 @@ import java.util.Map;
 * Copyright (c) 2025, qiershi2006@h163.com All Rights Reserved.
 */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
 
-    @PostMapping("/user")
-    public Map<String, Object> register(@RequestParam RegisterUserDTO registerUserDTO) {
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("")
+    public Map<String, Object> register(@RequestParam String username, @RequestParam String password, @RequestParam String email) {
         Map<String, Object> response = new HashMap<>();
         try {
             User user = new User();
-            user.setUsername(registerUserDTO.getUsername());
-            user.setPassword(registerUserDTO.getPassword());
-            user.setEmail(registerUserDTO.getEmail());
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setEmail(email);
 
             userService.register(user);
             response.put("message", "注册成功");
@@ -51,13 +52,11 @@ public class UserController {
         return response;
     }
 
-    @GetMapping("/user")
-    public Map<String, Object> login(@RequestParam LoginUserDTO loginUserDTO) {
-        System.out.println(loginUserDTO.toString());
+    @GetMapping("")
+    public Map<String, Object> login(@RequestParam String username, @RequestParam String password) {
+        System.out.println("\nusername: " + username + "\npassword: " + password + "\n");
         Map<String, Object> response = new HashMap<>();
         try {
-            String username = loginUserDTO.getUsername();
-            String password = loginUserDTO.getPassword();
 
             if (username == null || password == null) {
                 response.put("code", 400);
@@ -82,7 +81,7 @@ public class UserController {
         return response;
     }
 
-    @PostMapping("/user/{id}")
+    @PostMapping("/{id}")
     public Map<String, Object> updateUserInfo(@PathVariable int id, @Valid @RequestBody User user) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -105,7 +104,7 @@ public class UserController {
         return response;
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public Map<String, Object> getUserInfo(@PathVariable int id) {
         Map<String, Object> response = new HashMap<>();
         try {

@@ -45,7 +45,7 @@ public class CartController {
 
     // 删除购物车条目
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Map<String, Object>> deleteCart(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> deleteCart(@PathVariable Integer id) {
         boolean success = cartService.deleteCartById(id);
         Map<String, Object> result = new HashMap<>();
         if (success) {

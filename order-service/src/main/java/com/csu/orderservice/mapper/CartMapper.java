@@ -61,7 +61,8 @@ public interface CartMapper {
      * 删除购物车条目
      */
     @Delete("DELETE FROM cart WHERE id = #{id}")
-    int deleteById(Long id);
+    int deleteById(@Param("id") Integer id);
 
+    @Delete("DELETE FROM cart WHERE user_id = #{userId}")
     void deleteSelectedByUserId(Long userId);
 }

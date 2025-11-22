@@ -13,6 +13,8 @@ public class Orders {
     private String name;
     private String phone;
     private String email;
-    private Integer paytype;       // 0 未支付 1 已支付
-    private LocalDateTime createTime;
+    private Integer paytype;
+    private Integer status;
+    private LocalDateTime datetime;
+    private String state;
 }

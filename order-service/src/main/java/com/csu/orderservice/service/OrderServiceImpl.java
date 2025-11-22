@@ -61,8 +61,10 @@ public class OrderServiceImpl implements OrderService {
         orders.setName(request.getName());
         orders.setPhone(request.getPhone());
         orders.setEmail(request.getEmail());
-        orders.setPaytype(0); // 未支付
-        orders.setCreateTime(LocalDateTime.now());
+        orders.setPaytype(request.getPayType());
+        orders.setStatus(1);
+        orders.setState("0");
+        orders.setDatetime(LocalDateTime.now());
 
         ordersMapper.insert(orders);
 
@@ -107,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
             dto.setPhone(orders.getPhone());
             dto.setEmail(orders.getEmail());
             dto.setPaytype(orders.getPaytype());
-            dto.setCreateTime(orders.getCreateTime());
+            dto.setCreateTime(orders.getDatetime());
 
             List<OrderItems> items = orderItemsMapper.findByOrderId(orders.getId());
             List<OrderDetailsDTO.OrderItemInfo> list = new ArrayList<>();

@@ -13,5 +13,5 @@ public interface CartService {
 
     void updateCartSelection(List<Long> cartIds);
 
-    boolean deleteCartById(Long id);
+    boolean deleteCartById(Integer id);
 }

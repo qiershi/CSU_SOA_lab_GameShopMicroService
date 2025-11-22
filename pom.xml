@@ -15,7 +15,7 @@
         <module>gateway-service</module>
         <module>user-service</module>
         <module>captcha-service</module>
-        <module>common</module>
+        <module>product-service</module>
         <!-- 可继续添加 -->
     </modules>
 

@@ -1,0 +1,20 @@
+server:
+    port: 8083
+
+spring:
+    application:
+        name: product-service
+
+    datasource:
+        url: jdbc:mysql://localhost:3306/gameshop?useSSL=false&serverTimezone=Asia/Shanghai
+        username: root
+        password: 123
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+    cloud:
+        nacos:
+            discovery:
+                server-addr: localhost:8848
+
+image:
+    upload-dir: ./uploads

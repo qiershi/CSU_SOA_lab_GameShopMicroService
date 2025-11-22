@@ -34,6 +34,14 @@ spring:
           filters:
             - StripPrefix=1
 
+        # product-service
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/captcha/**
+          filters:
+            - StripPrefix=1
+
 jwt:
   static-token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNzE0NDE2MDAwfQ.-hRAkTD14LdbEmUlvXxAxWp0ZIl9IvAY-OSiNLk8_Kk
   secret: secureSecretKey1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef

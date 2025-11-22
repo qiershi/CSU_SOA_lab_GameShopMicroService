@@ -45,6 +45,10 @@ spring:
           uri: lb://order-service
           predicates:
             - Path=/order/**
+
+        - id: cart-service
+          uri: lb://order-service
+          predicates:
             - Path=/cart/**
 
 jwt:

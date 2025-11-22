@@ -13,8 +13,8 @@
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user (username, password, phone, email)
-        VALUES (#{username}, #{password}, #{phone}, #{email})
+        INSERT INTO user (username, password, email)
+        VALUES (#{username}, #{password}, #{email})
     </insert>
 
     <update id="update" parameterType="com.csu.userservice.entity.User">
